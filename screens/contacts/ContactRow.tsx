@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 
-import Contact from '../contacts';
+import Contact from '../../contacts';
 
 type Props = {
   contact: Contact;

@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Text, SectionList, Button, View, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import Contact from '../contacts';
+import Contact from '../../contacts';
 import ContactRow from './ContactRow';
 import { ContactNavigatorParams } from './ContactScreen';
 

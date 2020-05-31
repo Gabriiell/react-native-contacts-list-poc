@@ -3,8 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AddContactScreen, { ContactSubmit } from './AddContactScreen';
 import ContactListScreen from './ContactListScreen';
 import ContactDetailScreen from './ContactDetailScreen';
-import Contact from '../contacts';
-import { fetchContacts } from '../api';
+import Contact from '../../contacts';
+import { fetchContacts } from '../../api';
 
 export type ContactNavigatorParams = {
   ContactList: undefined;
