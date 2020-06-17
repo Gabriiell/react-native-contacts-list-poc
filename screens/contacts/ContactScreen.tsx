@@ -1,10 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import AddContactScreen, { ContactSubmit } from './AddContactScreen';
+import AddContactScreen from './AddContactScreen';
 import ContactListScreen from './ContactListScreen';
 import ContactDetailScreen from './ContactDetailScreen';
 import Contact from '../../contacts';
-import { fetchContacts } from '../../api';
+import { store } from '../../state/store';
+import { Unsubscribe } from 'redux';
 
 export type ContactNavigatorParams = {
   ContactList: undefined;
@@ -15,24 +16,25 @@ export type ContactNavigatorParams = {
 const Stack = createStackNavigator<ContactNavigatorParams>();
 
 export default class ContactScreen extends React.Component<{}, { contacts: Contact[] }> {
+  private unsubscribe: Unsubscribe | undefined;
+
   state = {
-    contacts: [],
+    contacts: store.getState().contacts,
   };
 
   componentDidMount() {
-    this.getContacts();
+    this.unsubscribe = store.subscribe(() => {
+      this.setState({
+        contacts: store.getState().contacts
+      });
+    });
   }
 
-  async getContacts() {
-    const contacts = await fetchContacts();
-    this.setState({ contacts });
+  componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
   }
-
-  addContact = (contact: ContactSubmit) => {
-    this.setState((prevState) => ({
-      contacts: [...prevState.contacts, { ...contact, id: prevState.contacts.length + 1 }],
-    }));
-  };
 
   render() {
     return (
@@ -40,9 +42,7 @@ export default class ContactScreen extends React.Component<{}, { contacts: Conta
         <Stack.Screen name='ContactList' options={{ headerTitle: 'Contacts' }}>
           {(props) => <ContactListScreen {...props} contacts={this.state.contacts} />}
         </Stack.Screen>
-        <Stack.Screen name='AddContact' options={{ headerTitle: 'New Contact' }}>
-          {(props) => <AddContactScreen {...props} onSubmit={this.addContact} />}
-        </Stack.Screen>
+        <Stack.Screen name='AddContact' component={AddContactScreen} options={{ headerTitle: 'New Contact' }} />
         <Stack.Screen
           name='ContactDetail'
           component={ContactDetailScreen}

@@ -2,6 +2,8 @@ import React from 'react';
 import { TextInput, Button, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ContactNavigatorParams } from './ContactScreen';
+import { store } from '../../state/store';
+import { getAddContactAction } from '../../state/actions';
 
 const styles = StyleSheet.create({
   input: {
@@ -12,13 +14,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export interface ContactSubmit {
-  name: string;
-  phone: string;
-}
-
 type Props = {
-  onSubmit: (contact: ContactSubmit) => void;
   navigation: StackNavigationProp<ContactNavigatorParams, 'AddContact'>;
 }
 
@@ -49,7 +45,7 @@ export default class AddContactScreen extends React.Component<Props, State> {
     });
 
   submit = () => {
-    this.props.onSubmit({ name: this.state.name, phone: this.state.phone });
+    store.dispatch(getAddContactAction({ id: 0, name: this.state.name, phone: this.state.phone }));
     this.props.navigation.goBack();
   };
 
