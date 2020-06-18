@@ -2,8 +2,8 @@ import React from 'react';
 import { TextInput, Button, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ContactNavigatorParams } from './ContactScreen';
-import { store } from '../../state/store';
-import { getAddContactAction } from '../../state/actions';
+import { addContact } from '../../state/actions';
+import { connect, ConnectedProps } from 'react-redux';
 
 const styles = StyleSheet.create({
   input: {
@@ -14,9 +14,12 @@ const styles = StyleSheet.create({
   },
 });
 
+const connector = connect(null, { addContact });
+type PropsFromRedux = ConnectedProps<typeof connector>
+
 type Props = {
   navigation: StackNavigationProp<ContactNavigatorParams, 'AddContact'>;
-}
+} & PropsFromRedux;
 
 type State = {
   name: string;
@@ -24,7 +27,7 @@ type State = {
   isValidForm: boolean;
 }
 
-export default class AddContactScreen extends React.Component<Props, State> {
+class AddContactScreen extends React.Component<Props, State> {
   state: State = {
     name: '',
     phone: '',
@@ -45,7 +48,7 @@ export default class AddContactScreen extends React.Component<Props, State> {
     });
 
   submit = () => {
-    store.dispatch(getAddContactAction({ id: 0, name: this.state.name, phone: this.state.phone }));
+    this.props.addContact({ id: 0, name: this.state.name, phone: this.state.phone });
     this.props.navigation.goBack();
   };
 
@@ -65,3 +68,5 @@ export default class AddContactScreen extends React.Component<Props, State> {
     );
   }
 }
+
+export default connector(AddContactScreen);

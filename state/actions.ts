@@ -7,7 +7,7 @@ export interface AddContactAction {
     payload: Contact
 }
 
-export function getAddContactAction(contact: Contact): AddContactAction {
+export function addContact(contact: Contact): AddContactAction {
     return {
         type: ADD_CONTACT,
         payload: contact
