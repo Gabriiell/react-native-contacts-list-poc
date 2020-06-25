@@ -12,4 +12,12 @@ export const fetchContacts = async () => {
   );
 
   return contacts;
-}
+};
+
+export const authenticate = (username: string, password: string) => {
+  if (username === 'username' && password === 'password') {
+    return Promise.resolve({ token: 'foo' });
+  }
+
+  return Promise.reject(new Error('Wrong username or password'));
+};

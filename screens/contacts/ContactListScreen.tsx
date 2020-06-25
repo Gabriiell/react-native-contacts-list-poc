@@ -6,6 +6,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import Contact from '../../contacts';
 import ContactRow from './ContactRow';
 import { ContactNavigatorParams } from './ContactScreen';
+import { RootState } from '../../state/reducer';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,10 +22,6 @@ interface ContactsBySection {
 type Props = {
   navigation: StackNavigationProp<ContactNavigatorParams, 'ContactList'>;
 };
-
-interface RootState {
-  contacts: Contact[]
-}
 
 const mapState = (state: RootState) => ({
   contacts: state.contacts
